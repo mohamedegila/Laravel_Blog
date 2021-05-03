@@ -47,8 +47,8 @@
               <span>Post</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-              <a class="dropdown-item" href="#">View All</a>
-              <a class="dropdown-item" href="#">Add New</a>
+              <a class="dropdown-item" href="{{url('admin/post')}}">View All</a>
+              <a class="dropdown-item" href="{{url('admin/post/create')}}">Add New</a>
             </div>
           </li>
           <!-- Comments -->

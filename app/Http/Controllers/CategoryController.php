@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Mockery\Undefined;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -47,7 +48,7 @@ class CategoryController extends Controller
             'cat_image'=>'required'
         ]);
 
-        $reImage='';
+        $reImage='na';
         if ($request->hasFile('cat_image')) {
             $image=$request->file('cat_image');
             $reImage=time().'.'.$image->getClientOriginalExtension();
@@ -126,7 +127,13 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::where('id', $id)->delete();
+        $category = Category::where('id', $id)->first();
+
+        if ($category->image !== '' || $category->image !== 'na') {
+            $path = public_path('/imgs').'/'.$category->image;
+            unlink($path);
+        }
+        $category->delete();
         return redirect('admin/category');
     }
 }

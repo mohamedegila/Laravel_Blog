@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +29,7 @@ Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admi
 // Categories
 Route::resource('/admin/category', CategoryController::class);
 Route::get('admin/category/{id}/delete', [CategoryController::class,'destroy']);
-Route::resource('admin/category', CategoryController::class);
+
+// Categories
+Route::resource('/admin/post', PostController::class);
+Route::get('admin/post/{id}/delete', [PostController::class,'destroy']);

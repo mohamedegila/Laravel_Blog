@@ -22,8 +22,9 @@ class CreatePostsTable extends Migration
             $table->string('full_img');
             $table->text('details');
             $table->string('tags');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('cat_id')->references('id')->on('categories');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('cat_id')->references('id')->on('categories')->onDelete('cascade');
+            ;
             $table->timestamps();
         });
     }

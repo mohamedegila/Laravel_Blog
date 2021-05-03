@@ -2,7 +2,7 @@
 
 
 
- @extends('layout.backend.app')
+@extends('layout.backend.app')
 @section('meta_desc',$meta_desc ?? '')
 @section('title',$title)
 @section('content')
