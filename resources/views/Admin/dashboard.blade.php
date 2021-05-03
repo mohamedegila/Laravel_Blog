@@ -4,6 +4,11 @@
 @section('content')
 <div class="container-fluid">
 
+  @if(!Session::has('adminData'))
+      <script>
+        window.location.href = 'login';
+      </script>
+  @endif
   <!-- Breadcrumbs-->
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
