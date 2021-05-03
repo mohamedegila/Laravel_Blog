@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Post;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -37,6 +38,13 @@ class AdminController extends Controller
     //Dashboard
     public function dashboard()
     {
-        return 'dashboard';
+        $posts=Post::orderBy('id', 'desc')->get();
+        return view(
+            'Admin.dashboard',
+            [
+            'posts'=>$posts,
+            'title'=>'Dashboard'
+        ]
+        );
     }
 }
