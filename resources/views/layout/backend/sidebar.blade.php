@@ -67,7 +67,7 @@
           </li>
           <!-- Settings -->
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('admin.setting') }}">
               <i class="fas fa-fw fa-cog"></i>
               <span>Settings</span>
             </a>

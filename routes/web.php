@@ -2,6 +2,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,3 +35,7 @@ Route::get('admin/category/{id}/delete', [CategoryController::class,'destroy']);
 // Categories
 Route::resource('/admin/post', PostController::class);
 Route::get('admin/post/{id}/delete', [PostController::class,'destroy']);
+
+//settings
+Route::get('/admin/setting', [SettingController::class,'index'])->name('admin.setting');
+Route::post('/admin/setting', [SettingController::class,'save_settings'])->name('admin.saveSetting');
