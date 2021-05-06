@@ -42,9 +42,13 @@
 				<div class="card mb-4">
 					<h5 class="card-header">Recent Posts</h5>
 					<div class="list-group list-group-flush">
-					
-						<a href="#" class="list-group-item">Post 1</a>
-						<a href="#" class="list-group-item">Post 2</a>
+						@if ($recent_posts)
+							@foreach ($recent_posts as $post )
+								<a href="#" class="list-group-item">{{ $post->title }}</a>
+							@endforeach
+							
+						@endif
+
 
 				
 					</div>
