@@ -114,16 +114,29 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $post=Post::find($id);
         $request->validate([
             'title'=>'required',
             'details'=>'required',
             'category'=>'required'
         ]);
 
+
+        if ($post->full_img !== "na" && $post->full_img !== "") {
+            $path = public_path('/imgs/full').'/'.$post->full_img;
+            unlink($path);
+        }
+        
+        if ($post->thumb !== "na" && $post->full_img !== "") {
+            $path = public_path('/imgs/thumb').'/'.$post->thumb;
+            unlink($path);
+        }
+
         // Post Thumbnail
         if ($request->hasFile('post_thumb')) {
             $image1=$request->file('post_thumb');
             $reThumbImage=time().'.'.$image1->getClientOriginalExtension();
+         
             $dest1=public_path('/imgs/thumb');
             $image1->move($dest1, $reThumbImage);
         } else {
@@ -140,7 +153,7 @@ class PostController extends Controller
             $reFullImage=$request->post_image;
         }
 
-        $post=Post::find($id);
+        //$post=Post::find($id);
         $post->cat_id=$request->category;
         $post->title=$request->title;
         $post->thumb=$reThumbImage;
