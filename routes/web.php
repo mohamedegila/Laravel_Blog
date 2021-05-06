@@ -18,9 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 
 Route::get('/admin/login', [AdminController::class,'login'])->name('admin.login');
@@ -43,3 +40,5 @@ Route::get('/admin/setting', [SettingController::class,'index'])->name('admin.se
 Route::post('/admin/setting', [SettingController::class,'save_settings'])->name('admin.saveSetting');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::get('/', [HomeController::class, 'index']);
