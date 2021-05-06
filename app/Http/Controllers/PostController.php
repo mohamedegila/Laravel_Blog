@@ -127,7 +127,7 @@ class PostController extends Controller
             $dest1=public_path('/imgs/thumb');
             $image1->move($dest1, $reThumbImage);
         } else {
-            $reThumbImage='na';
+            $reThumbImage=$request->post_thumb;
         }
 
         // Post Full Image
@@ -137,11 +137,10 @@ class PostController extends Controller
             $dest2=public_path('/imgs/full');
             $image2->move($dest2, $reFullImage);
         } else {
-            $reFullImage='na';
+            $reFullImage=$request->post_image;
         }
 
-        $post=new Post;
-        $post->user_id=1;
+        $post=Post::find($id);
         $post->cat_id=$request->category;
         $post->title=$request->title;
         $post->thumb=$reThumbImage;
@@ -149,6 +148,7 @@ class PostController extends Controller
         $post->details=$request->details;
         $post->tags=$request->tags;
         $post->save();
+
         return redirect('admin/post/'.$id.'/edit')->with('success', 'Post has been updated');
     }
 
