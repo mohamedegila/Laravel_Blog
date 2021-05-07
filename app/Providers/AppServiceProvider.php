@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
 use App\Models\Post;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -26,7 +27,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $setting = Admin::select(
+            'recent_limit',
+            'popular_limit',
+        )
+        ->where('id', 1)->first();
         Paginator::useBootstrap();
-        View::share('recent_posts', Post::orderBy('id', 'desc')->limit(5)->get());
+        View::share('recent_posts', Post::orderBy('id', 'desc')->limit($setting->recent_limit)->get());
+        View::share('popular_posts', Post::orderBy('views', 'desc')->limit($setting->popular_limit)->get());
     }
 }

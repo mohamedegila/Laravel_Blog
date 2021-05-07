@@ -17,4 +17,13 @@ class HomeController extends Controller
         }
         return view('home', ['posts'=>$posts]);
     }
+
+    
+    public function detail(Request $request, $slug, $post_id)
+    {
+        Post::find($post_id)->increment('views');
+        $post = Post::find($post_id);
+
+        return view('Admin.post.detail', ['detail'=>$post]);
+    }
 }

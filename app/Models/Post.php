@@ -19,4 +19,10 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class, 'cat_id');
     }
+
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment')->orderBy('id', 'desc');
+    }
 }

@@ -39,6 +39,6 @@ Route::get('admin/post/{id}/delete', [PostController::class,'destroy']);
 Route::get('/admin/setting', [SettingController::class,'index'])->name('admin.setting');
 Route::post('/admin/setting', [SettingController::class,'save_settings'])->name('admin.saveSetting');
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
 Route::get('/', [HomeController::class, 'index']);
+
+Route::get('/detail/{slug}/{id}', [HomeController::class,'detail']);
