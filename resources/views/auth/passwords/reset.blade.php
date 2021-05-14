@@ -1,4 +1,4 @@
-@extends('layout.frontend.app')
+@extends('layout.frontend.appAuth')
 @section('title','Rest Password')
 @section('content')
 <div class="container">

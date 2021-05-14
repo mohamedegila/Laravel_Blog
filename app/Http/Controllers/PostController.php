@@ -188,4 +188,24 @@ class PostController extends Controller
         $post->delete();
         return redirect('admin/post');
     }
+
+    public function active($id)
+    {
+        $post = Post::where('id', $id)->first();
+
+        $post->status=1;
+        $post->save();
+
+        return redirect('admin/post');
+    }
+
+    public function inactive($id)
+    {
+        $post = Post::where('id', $id)->first();
+
+        $post->status=0;
+        $post->save();
+
+        return redirect('admin/post');
+    }
 }

@@ -18,16 +18,18 @@
   </ol>
 
   <!-- Icon Cards-->
+
   <div class="row">
+
     <div class="col-xl-3 col-sm-6 mb-3">
       <div class="card text-white bg-primary o-hidden h-100">
         <div class="card-body">
           <div class="card-body-icon">
             <i class="fas fa-fw fa-list"></i>
           </div>
-          <div class="mr-5">{{\App\Models\Category::count()}} Categories</div>
+          <div class="mr-5">{{$info['categories_count']}} Categories</div>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="{{url('category')}}">
+        <a class="card-footer text-dark clearfix small z-1" href="{{route('category.index')}}">
           <span class="float-left">View Details</span>
           <span class="float-right">
             <i class="fas fa-angle-right"></i>
@@ -41,9 +43,11 @@
           <div class="card-body-icon">
             <i class="fas fa-fw fa-address-card"></i>
           </div>
-          <div class="mr-5">{{\App\Models\Post::count()}} Posts</div>
+          <div class="mr-5">{{$info['posts_count']}} Posts</div>
+          <span class="m-5">{{$info['activePosts_count']}} Active</span>
+          <span class="m-5">{{$info['inactivePosts_count']}} Inactive</span>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="{{url('post')}}">
+        <a class="card-footer text-dark clearfix small z-1" href="{{route('post.index')}}">
           <span class="float-left">View Details</span>
           <span class="float-right">
             <i class="fas fa-angle-right"></i>
@@ -57,9 +61,9 @@
           <div class="card-body-icon">
             <i class="fas fa-fw fa-comments"></i>
           </div>
-          <div class="mr-5">{{\App\Models\Comment::count()}} Comments</div>
+          <div class="mr-5">{{$info['comments_count']}} Comments</div>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="{{url('comment')}}">
+        <a class="card-footer text-dark clearfix small z-1" href="{{url('comment')}}">
           <span class="float-left">View Details</span>
           <span class="float-right">
             <i class="fas fa-angle-right"></i>
@@ -73,9 +77,9 @@
           <div class="card-body-icon">
             <i class="fas fa-fw fa-users"></i>
           </div>
-          <div class="mr-5">{{\App\Models\User::count()}} Users</div>
+          <div class="mr-5">{{$info['users_count']}} Users</div>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="{{url('user')}}">
+        <a class="card-footer text-dark clearfix small z-1" href="{{url('user')}}">
           <span class="float-left">View Details</span>
           <span class="float-right">
             <i class="fas fa-angle-right"></i>
@@ -90,7 +94,7 @@
   <div class="card mb-3">
     <div class="card-header">
       <i class="fas fa-table"></i>
-      Recent Posts</div>
+      Active Posts</div>
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

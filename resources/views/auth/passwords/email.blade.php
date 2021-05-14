@@ -1,4 +1,4 @@
-@extends('layout.frontend.app')
+@extends('layout.frontend.appAuth')
 @section('title','Send Email')
 @section('content')
 <div class="container">

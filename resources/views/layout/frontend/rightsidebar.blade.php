@@ -8,7 +8,7 @@
                 <div class="input-group">
                   <input type="text" name="q" class="form-control" />
                   <div class="input-group-append">
-                    <button class="btn btn-dark" type="button" id="button-addon2">Search</button>
+                    <button class="btn btn-dark" type="submit" id="button-addon2">Search</button>
                   </div>
                 </div>
             </form>

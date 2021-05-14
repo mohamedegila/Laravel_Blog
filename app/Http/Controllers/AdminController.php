@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -40,11 +43,26 @@ class AdminController extends Controller
     //Dashboard
     public function dashboard()
     {
-        $posts=Post::orderBy('id', 'desc')->get();
+        $posts_count = Post::count();
+        $activePosts_count = Post::where('status', 1)->count();
+        $inactivePosts_count = Post::where('status', 0)->count();
+
+        $comments_count = Comment::count();
+        $users_count = User::count();
+        $categories_count = Category::count();
+        $posts=Post::where('status', 1)->orderBy('id', 'desc')->get();
+        $info = ['posts_count'          =>$posts_count,
+                 'categories_count'     =>$posts_count,
+                 'users_count'          =>$users_count,
+                 'comments_count'       =>$comments_count,
+                 'activePosts_count'    =>$activePosts_count,
+                 'inactivePosts_count'  =>$inactivePosts_count
+                ];
         return view(
             'Admin.dashboard',
             [
             'posts'=>$posts,
+            'info'=>$info,
             'title'=>'Dashboard'
         ]
         );

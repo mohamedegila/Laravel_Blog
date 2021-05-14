@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
@@ -18,9 +19,9 @@ class HomeController extends Controller
     {
         if ($request->has('q')) {
             $q=$request->q;
-            $posts=Post::where('title', 'like', '%'.$q.'%')->orderBy('id', 'desc')->paginate(2);
+            $posts=Post::where('status', 1)->where('title', 'like', '%'.$q.'%')->orderBy('id', 'desc')->paginate(2);
         } else {
-            $posts = Post::orderBy('id', 'desc')->paginate(5);
+            $posts = Post::where('status', 1)->orderBy('id', 'desc')->paginate(5);
         }
         return view('home', ['posts'=>$posts]);
     }
@@ -89,5 +90,64 @@ class HomeController extends Controller
         $comment->comment = $request->comment;
         $comment->save();
         return redirect('detail/'.$slug.'/'.$post_id)->with('success', 'Comment has been submitted.');
+    }
+
+
+    // User submit post
+    public function save_post_form()
+    {
+        $cats=Category::all();
+        return view('save-post-form', ['cats'=>$cats]);
+    }
+
+    // Save Data
+    public function save_post_data(Request $request)
+    {
+        $setting = Admin::select(
+            'user_auto',
+        )
+        ->where('id', 1)->first();
+        $request->validate([
+            'title'=>'required',
+            'category'=>'required',
+            'details'=>'required',
+        ]);
+
+        // Post Thumbnail
+        if ($request->hasFile('post_thumb')) {
+            $image1=$request->file('post_thumb');
+            $reThumbImage=time().'.'.$image1->getClientOriginalExtension();
+            $dest1=public_path('/imgs/thumb');
+            $image1->move($dest1, $reThumbImage);
+        } else {
+            $reThumbImage='na';
+        }
+
+        // Post Full Image
+        if ($request->hasFile('post_image')) {
+            $image2=$request->file('post_image');
+            $reFullImage=time().'.'.$image2->getClientOriginalExtension();
+            $dest2=public_path('/imgs/full');
+            $image2->move($dest2, $reFullImage);
+        } else {
+            $reFullImage='na';
+        }
+
+        $post=new Post;
+        $post->user_id=$request->user()->id;
+        $post->cat_id=$request->category;
+        $post->title=$request->title;
+        $post->thumb=$reThumbImage;
+        $post->full_img=$reFullImage;
+        $post->details=$request->details;
+        $post->tags=$request->tags;
+
+        if ($setting->user_auto == 1) {
+            $post->status=1;
+        }
+       
+        $post->save();
+
+        return redirect('save-post-form')->with('success', 'Post has been added');
     }
 }

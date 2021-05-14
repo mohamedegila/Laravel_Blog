@@ -31,9 +31,11 @@ Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admi
 Route::resource('/admin/category', CategoryController::class);
 Route::get('admin/category/{id}/delete', [CategoryController::class,'destroy']);
 
-// Categories
+// Posts
 Route::resource('/admin/post', PostController::class);
 Route::get('admin/post/{id}/delete', [PostController::class,'destroy']);
+Route::get('admin/post/{id}/active', [PostController::class,'active']);
+Route::get('admin/post/{id}/inactive', [PostController::class,'inactive']);
 
 //settings
 Route::get('/admin/setting', [SettingController::class,'index'])->name('admin.setting');
@@ -51,3 +53,5 @@ Route::get('/detail/{slug}/{id}', [HomeController::class,'detail'])->name('post_
 Route::post('/save-comment/{slug}/{id}', [HomeController::class,'save_comment']);
 Route::get('/all-categories', [HomeController::class,'all_category']);
 Route::get('/category/{slug}/{id}', [HomeController::class,'category']);
+Route::get('save-post-form', [HomeController::class,'save_post_form']);
+Route::post('save-post-form', [HomeController::class,'save_post_data']);

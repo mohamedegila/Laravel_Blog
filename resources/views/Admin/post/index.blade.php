@@ -52,6 +52,11 @@
                 <td><img src="{{ asset('imgs/thumb').'/'.$post->thumb }}" width="100" /></td>
                 <td><img src="{{ asset('imgs/full').'/'.$post->full_img }}" width="100" /></td>
                 <td>
+                  @if ($post->status == 0)
+                    <a class="btn btn-info btn-sm" href="{{url('admin/post/'.$post->id.'/active')}}">Activate</a>
+                  @else
+                  <a class="btn btn-info btn-sm" href="{{url('admin/post/'.$post->id.'/inactive')}}">Deactivate</a>
+                  @endif
                   <a class="btn btn-info btn-sm" href="{{url('admin/post/'.$post->id.'/edit')}}">Update</a>
                   <a onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger btn-sm" href="{{url('admin/post/'.$post->id.'/delete')}}">Delete</a>
                 </td>
