@@ -36,6 +36,8 @@ class HomeController extends Controller
     */
     public function detail(Request $request, $slug, $post_id)
     {
+        $comment_count = Post::find($post_id)->comments->where('status', 1)->count();
+        
         $post = Post::find($post_id);
         if ($post) {
             $post->increment('views');
@@ -44,7 +46,8 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
 
-        return view('detail', ['detail'=>$post]);
+        return view('detail', ['detail'=>$post,
+                                'comment_counter'=>$comment_count]);
     }
 
 
@@ -84,6 +87,10 @@ class HomeController extends Controller
     */
     public function save_comment(Request $request, $slug, $post_id)
     {
+        $setting = Admin::select(
+            'comment_auto',
+        )
+        ->where('id', 1)->first();
         $request->validate([
             'comment'=>'required'
         ]);
@@ -93,8 +100,12 @@ class HomeController extends Controller
         $comment->user_id = $request->user()->id;
         $comment->post_id = $post_id;
         $comment->comment = $request->comment;
+
+        if ($setting->comment_auto == 1) {
+            $comment->status=1;
+        }
         $comment->save();
-        return redirect('detail/'.$slug.'/'.$post_id)->with('success', 'Comment has been submitted.');
+        return redirect('detail/'.$slug.'/'.$post_id)->with('success', $setting->comment_auto?'Comment has been submitted.':'Comment has been submitted waiting for admin acceptance.');
     }
 
 

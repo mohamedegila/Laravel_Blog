@@ -44,6 +44,11 @@
                 <td>@if(!empty($comment->user_id)) {{$comment->user->email}} @endif</td>
                 <td>{{$comment->comment}}</td>
                 <td>
+                  @if ($comment->status == 0)
+                  <a class="btn btn-info btn-sm" href="{{url('admin/comment/'.$comment->id.'/active')}}">Activate</a>
+                  @else
+                  <a class="btn btn-info btn-sm" href="{{url('admin/comment/'.$comment->id.'/inactive')}}">Deactivate</a>
+                  @endif
                   <a onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger btn-sm" href="{{url('admin/comment/delete/'.$comment->id)}}">Delete</a>
                 </td>
               </tr>

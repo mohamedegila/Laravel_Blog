@@ -33,19 +33,21 @@
 				@endauth
 				<!-- Fetch Comments -->
 				<div class="card my-4">
-					<h5 class="card-header">Comments <span class="badge badge-dark">{{count($detail->comments)}}</span></h5>
+					<h5 class="card-header">Comments <span class="badge badge-dark">{{$comment_counter}}</span></h5>
 					<div class="card-body">
 						@if($detail->comments)
 							@foreach($detail->comments as $comment)
-								<blockquote class="blockquote">
-								  <p class="mb-0">{{$comment->comment}}</p>
-								  @if($comment->user_id==1)
-								  <footer class="blockquote-footer">Admin</footer>
-								  @else
-								  <footer class="blockquote-footer">{{$comment->user->name}}</footer>
-								  @endif
-								</blockquote>
-								<hr/>
+								@if($comment->status != 0)
+									<blockquote class="blockquote">
+								 	 <p class="mb-0">{{$comment->comment}}</p>
+								 	 @if($comment->user_id==1)
+								 	 <footer class="blockquote-footer">Admin</footer>
+								 	 @else
+								 	 <footer class="blockquote-footer">{{$comment->user->name}}</footer>
+								 	 @endif
+									</blockquote>
+									<hr/>
+								@endif
 							@endforeach
 						@endif
 					</div>

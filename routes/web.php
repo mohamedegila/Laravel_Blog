@@ -25,26 +25,29 @@ Route::get('/admin/login', [AdminController::class,'login'])->name('admin.login'
 Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
 Route::post('/admin/login', [AdminController::class,'submitLogin'])->name('admin.submitLogin');
 
-Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard')->middleware('authAdmin:webadmin');
+Route::middleware('authAdmin:webadmin')->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard');
 
-// Comment
-Route::get('admin/comment', [CommentController::class,'index'])->name('admin.manage.comment');
-Route::get('admin/comment/delete/{id}', [CommentController::class,'delete_comment']);
+    // Comment
+    Route::get('admin/comment', [CommentController::class,'index'])->name('admin.manage.comment');
+    Route::get('admin/comment/delete/{id}', [CommentController::class,'delete_comment']);
+    Route::get('admin/comment/{id}/active', [CommentController::class,'active']);
+    Route::get('admin/comment/{id}/inactive', [CommentController::class,'inactive']);
 
-// Categories
-Route::resource('/admin/category', CategoryController::class);
-Route::get('admin/category/{id}/delete', [CategoryController::class,'destroy']);
+    // Categories
+    Route::resource('/admin/category', CategoryController::class);
+    Route::get('admin/category/{id}/delete', [CategoryController::class,'destroy']);
 
-// Posts
-Route::resource('/admin/post', PostController::class);
-Route::get('admin/post/{id}/delete', [PostController::class,'destroy']);
-Route::get('admin/post/{id}/active', [PostController::class,'active']);
-Route::get('admin/post/{id}/inactive', [PostController::class,'inactive']);
+    // Posts
+    Route::resource('/admin/post', PostController::class);
+    Route::get('admin/post/{id}/delete', [PostController::class,'destroy']);
+    Route::get('admin/post/{id}/active', [PostController::class,'active']);
+    Route::get('admin/post/{id}/inactive', [PostController::class,'inactive']);
 
-//settings
-Route::get('/admin/setting', [SettingController::class,'index'])->name('admin.setting');
-Route::post('/admin/setting', [SettingController::class,'save_settings'])->name('admin.saveSetting');
-
+    //settings
+    Route::get('/admin/setting', [SettingController::class,'index'])->name('admin.setting');
+    Route::post('/admin/setting', [SettingController::class,'save_settings'])->name('admin.saveSetting');
+});
 Route::get('/', [HomeController::class, 'index']);
 
 

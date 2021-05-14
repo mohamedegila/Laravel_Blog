@@ -19,4 +19,24 @@ class CommentController extends Controller
         Comment::where('id', $id)->delete();
         return redirect()->route('admin.manage.comment');
     }
+
+    public function active($id)
+    {
+        $comment = Comment::where('id', $id)->first();
+
+        $comment->status=1;
+        $comment->save();
+
+        return redirect()->route('admin.manage.comment');
+    }
+
+    public function inactive($id)
+    {
+        $comment = Comment::where('id', $id)->first();
+
+        $comment->status=0;
+        $comment->save();
+
+        return redirect()->route('admin.manage.comment');
+    }
 }
