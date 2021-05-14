@@ -2,6 +2,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Arr;
@@ -26,6 +27,9 @@ Route::post('/admin/login', [AdminController::class,'submitLogin'])->name('admin
 
 Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard');
 
+// Comment
+Route::get('admin/comment', [CommentController::class,'index'])->name('admin.manage.comment');
+Route::get('admin/comment/delete/{id}', [CommentController::class,'delete_comment']);
 
 // Categories
 Route::resource('/admin/category', CategoryController::class);

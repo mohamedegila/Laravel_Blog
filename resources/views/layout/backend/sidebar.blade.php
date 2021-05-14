@@ -53,7 +53,7 @@
           </li>
           <!-- Comments -->
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('admin.manage.comment')}}">
               <i class="fas fa-fw fa-comments"></i>
               <span>Comments</span>
             </a>
