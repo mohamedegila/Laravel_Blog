@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    /**
+     * Display all posts.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         if ($request->has('q')) {
@@ -19,15 +25,42 @@ class HomeController extends Controller
         return view('home', ['posts'=>$posts]);
     }
 
-    
+    /**
+    * Display post detail.
+    *
+    * @param  \Illuminate\Http\Request
+    * @param  slug
+    * @param  post_id
+    * @return \Illuminate\Http\Response
+    */
     public function detail(Request $request, $slug, $post_id)
     {
         Post::find($post_id)->increment('views');
         $post = Post::find($post_id);
 
-        return view('Admin.post.detail', ['detail'=>$post]);
+        return view('detail', ['detail'=>$post]);
     }
 
+
+    /**
+     * Display all category.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all_category()
+    {
+        $categories=Category::orderBy('id', 'desc')->paginate(5);
+        return view('categories', ['categories'=>$categories]);
+    }
+
+    /**
+    * Save comment for specific post.
+    *
+    * @param  \Illuminate\Http\Request
+    * @param  slug
+    * @param  post_id
+    * @return \Illuminate\Http\Response
+    */
     public function save_comment(Request $request, $slug, $post_id)
     {
         $request->validate([

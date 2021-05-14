@@ -1,4 +1,3 @@
-
 @extends('layout.frontend.app')
 @section('title',$detail->title)
 @section('content')
@@ -10,7 +9,7 @@
 				<div class="card">
 					<h5 class="card-header">
 						{{$detail->title}}
-						<span class="float-right">Total Views={{$detail->views}}</span>
+						<span class="float-right">Total Views <span class="badge badge-dark">{{$detail->views}}</span></span>
 					</h5>
 					<img src="{{asset('imgs/full/'.$detail->full_img)}}" class="card-img-top" alt="{{$detail->title}}">
 					<div class="card-body">
@@ -74,7 +73,7 @@
 					<div class="list-group list-group-flush">
 						@if($recent_posts)
 							@foreach($recent_posts as $post)
-								<a href="#" class="list-group-item">{{$post->title}}</a>
+								<a href="{{url('detail/'.Str::slug($post->title).'/'.$post->id)}}" class="list-group-item">{{$post->title}}</a>
 							@endforeach
 						@endif
 					</div>
@@ -85,7 +84,7 @@
 					<div class="list-group list-group-flush">
 						@if($popular_posts)
 							@foreach($popular_posts as $post)
-								<a href="#" class="list-group-item">{{$post->title}} <span class="badge badge-info float-right">{{$post->views}}</span></a>
+								<a href="{{url('detail/'.Str::slug($post->title).'/'.$post->id)}}" class="list-group-item">{{$post->title}} <span class="badge badge-info float-right">{{$post->views}}</span></a>
 							@endforeach
 						@endif
 					</div>

@@ -49,3 +49,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/detail/{slug}/{id}', [HomeController::class,'detail'])->name('post_detail');
 
 Route::post('/save-comment/{slug}/{id}', [HomeController::class,'save_comment']);
+Route::get('/all-categories', [HomeController::class,'all_category']);
