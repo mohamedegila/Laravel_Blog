@@ -36,8 +36,13 @@ class HomeController extends Controller
     */
     public function detail(Request $request, $slug, $post_id)
     {
-        Post::find($post_id)->increment('views');
         $post = Post::find($post_id);
+        if ($post) {
+            $post->increment('views');
+            $post = Post::find($post_id);
+        } else {
+            return redirect()->route('home');
+        }
 
         return view('detail', ['detail'=>$post]);
     }
@@ -66,7 +71,7 @@ class HomeController extends Controller
     public function category(Request $request, $cat_slug, $cat_id)
     {
         $category=Category::find($cat_id);
-        $posts=Post::where('cat_id', $cat_id)->orderBy('id', 'desc')->paginate(2);
+        $posts=Post::where('cat_id', $cat_id)->where('status', 1)->orderBy('id', 'desc')->paginate(2);
         return view('category', ['posts'=>$posts,'category'=>$category]);
     }
     /**

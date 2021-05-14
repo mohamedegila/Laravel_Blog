@@ -32,7 +32,8 @@
         <div class="list-group list-group-flush">
             @if($popular_posts)
                 @foreach($recent_posts as $post)
-                    <a href="{{url('detail/'.Str::slug($post->title).'/'.$post->id)}}" class="list-group-item">{{ $post->title }}</a>
+                    <a href="{{url('detail/'.Str::slug($post->title).'/'.$post->id)}}" class="list-group-item">{{ $post->title }}  <span class="badge badge-dark">{{$post->views}}</span> </a>
+                   
                 @endforeach
             @endif
         </div>
