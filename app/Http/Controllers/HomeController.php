@@ -54,6 +54,21 @@ class HomeController extends Controller
     }
 
     /**
+    * Show category posts.
+    *
+    * @param  \Illuminate\Http\Request
+    * @param  cat_slug
+    * @param  cat_id
+    * @return \Illuminate\Http\Response
+    */
+
+    public function category(Request $request, $cat_slug, $cat_id)
+    {
+        $category=Category::find($cat_id);
+        $posts=Post::where('cat_id', $cat_id)->orderBy('id', 'desc')->paginate(2);
+        return view('category', ['posts'=>$posts,'category'=>$category]);
+    }
+    /**
     * Save comment for specific post.
     *
     * @param  \Illuminate\Http\Request
