@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -22,21 +23,16 @@ class AdminController extends Controller
     public function submitLogin(Request $request)
     {
         $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required'
 
         ]);
-        
-        //$admins = Admin::all();
-        // dd(Admin::where(['username' => $request->username , 'password' => $request->password]));
-        $userCheck = Admin::where(['username'=>$request->username,'password'=>$request->password])->count();
-        //  dd($userCheck);
-        if ($userCheck > 0) {
-            $adminData=Admin::where(['username'=>$request->username,'password'=>$request->password])->first();
-            session(['adminData'=>$adminData]);
-            return redirect('admin/dashboard');
+    
+        $remember = request()->has('remember')?true:false;
+        if (Auth::guard('webadmin')->attempt(['email' => request('email'), 'password' => request('password')], $remember)) {
+            return redirect()->route('admin.dashboard');
         } else {
-            return redirect('admin/login')->with('error', 'Invalid username/password');
+            return redirect()->route('admin.login')->with('error', 'Invalid username/password');
         }
     }
 
@@ -71,7 +67,7 @@ class AdminController extends Controller
     // Logout
     public function logout()
     {
-        session()->forget(['adminData']);
-        return redirect('admin/login');
+        Auth::guard('webadmin')->logout();
+        return redirect()->route('admin.login');
     }
 }

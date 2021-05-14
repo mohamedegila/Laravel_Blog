@@ -25,7 +25,7 @@ Route::get('/admin/login', [AdminController::class,'login'])->name('admin.login'
 Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
 Route::post('/admin/login', [AdminController::class,'submitLogin'])->name('admin.submitLogin');
 
-Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard');
+Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard')->middleware('authAdmin:webadmin');
 
 // Comment
 Route::get('admin/comment', [CommentController::class,'index'])->name('admin.manage.comment');
@@ -52,10 +52,12 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/all-categories', [HomeController::class,'all_category']);
 Route::get('/detail/{slug}/{id}', [HomeController::class,'detail'])->name('post_detail');
 
-Route::post('/save-comment/{slug}/{id}', [HomeController::class,'save_comment']);
-Route::get('/all-categories', [HomeController::class,'all_category']);
-Route::get('/category/{slug}/{id}', [HomeController::class,'category']);
-Route::get('save-post-form', [HomeController::class,'save_post_form']);
-Route::post('save-post-form', [HomeController::class,'save_post_data']);
+Route::middleware('auth')->group(function () {
+    Route::post('/save-comment/{slug}/{id}', [HomeController::class,'save_comment']);
+    Route::get('/category/{slug}/{id}', [HomeController::class,'category']);
+    Route::get('save-post-form', [HomeController::class,'save_post_form']);
+    Route::post('save-post-form', [HomeController::class,'save_post_data']);
+});

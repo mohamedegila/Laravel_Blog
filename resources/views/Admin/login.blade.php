@@ -58,10 +58,10 @@
                                     <form class="user" method="POST" action="{{ route('admin.submitLogin') }}">
                                         @csrf
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
+                                            <input type="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Enter UserName..."
-                                                name="username">
+                                                name="email">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
@@ -70,7 +70,8 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck",
+                                                name="remember">
                                                 <label class="custom-control-label" for="customCheck">Remember
                                                     Me</label>
                                             </div>

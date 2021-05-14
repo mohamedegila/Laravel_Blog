@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Auth;
 
 class SettingController extends Controller
 {
     public function index()
     {
-        $adminId = session('adminData')->id;
-
-
+        $adminId = Auth::guard('webadmin')->user()->id;
 
         $settings = Admin::select(
             'user_auto',
@@ -28,7 +27,7 @@ class SettingController extends Controller
 
     public function save_settings(Request $request)
     {
-        $adminId = session('adminData')->id;
+        $adminId = Auth::guard('webadmin')->user()->id;
         $data=Admin::where('id', $adminId)->first();
 
         $data->comment_auto=$request->comment_auto;
