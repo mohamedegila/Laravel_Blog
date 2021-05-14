@@ -36,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         ->where('id', 1)->first();
         Paginator::useBootstrap();
         View::share('recent_posts', Post::orderBy('id', 'desc')->limit($setting->recent_limit)->get());
+        
         View::share('popular_posts', Post::orderBy('views', 'desc')->limit($setting->popular_limit)->get());
     }
 }

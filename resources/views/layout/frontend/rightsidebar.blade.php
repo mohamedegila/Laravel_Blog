@@ -20,7 +20,8 @@
         <div class="list-group list-group-flush">
             @if($recent_posts)
                 @foreach($recent_posts as $post)
-                    <a href="#" class="list-group-item">{{$post->title}}</a>
+                    <a href="{{url('detail/'.Str::slug($post->title).'/'.$post->id)}}" class="list-group-item">{{$post->title}}</a>
+                   
                 @endforeach
             @endif
         </div>
@@ -29,8 +30,11 @@
     <div class="card mb-4">
         <h5 class="card-header">Popular Posts</h5>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item">Post 1</a>
-            <a href="#" class="list-group-item">Post 2</a>
+            @if($popular_posts)
+                @foreach($recent_posts as $post)
+                    <a href="{{url('detail/'.Str::slug($post->title).'/'.$post->id)}}" class="list-group-item">{{ $post->title }}</a>
+                @endforeach
+            @endif
         </div>
     </div>
 </div>
