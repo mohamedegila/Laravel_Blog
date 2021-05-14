@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -25,5 +26,20 @@ class HomeController extends Controller
         $post = Post::find($post_id);
 
         return view('Admin.post.detail', ['detail'=>$post]);
+    }
+
+    public function save_comment(Request $request, $slug, $post_id)
+    {
+        $request->validate([
+            'comment'=>'required'
+        ]);
+
+        $comment = new Comment;
+
+        $comment->user_id = $request->user()->id;
+        $comment->post_id = $post_id;
+        $comment->comment = $request->comment;
+        $comment->save();
+        return redirect('detail/'.$slug.'/'.$post_id)->with('success', 'Comment has been submitted.');
     }
 }
