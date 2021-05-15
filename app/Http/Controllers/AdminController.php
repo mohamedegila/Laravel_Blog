@@ -40,9 +40,11 @@ class AdminController extends Controller
     public function dashboard()
     {
         $posts_count = Post::count();
-        $activePosts_count = Post::where('status', 1)->count();
-        $inactivePosts_count = Post::where('status', 0)->count();
-
+        $activePosts_count      = Post::where('status', 1)->count();
+        $inactivePosts_count    = Post::where('status', 0)->count();
+        $activeComments_count   = Comment::where('status', 1)->count();
+        $inactiveComments_count = Comment::where('status', 0)->count();
+        //dd($inactiveComments_count);
         $comments_count = Comment::count();
         $users_count = User::count();
         $categories_count = Category::count();
@@ -52,7 +54,9 @@ class AdminController extends Controller
                  'users_count'          =>$users_count,
                  'comments_count'       =>$comments_count,
                  'activePosts_count'    =>$activePosts_count,
-                 'inactivePosts_count'  =>$inactivePosts_count
+                 'inactivePosts_count'  =>$inactivePosts_count,
+                 'activeComments_count'    =>$activeComments_count,
+                 'inactiveComments_count'  =>$inactiveComments_count
                 ];
         return view(
             'Admin.dashboard',

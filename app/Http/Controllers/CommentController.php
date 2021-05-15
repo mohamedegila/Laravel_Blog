@@ -10,7 +10,8 @@ class CommentController extends Controller
     // Show all comments
     public function index()
     {
-        $data=Comment::orderBy('id', 'desc')->get();
+        $data = Comment::orderBy('id', 'desc')->get();
+       
         return view('Admin.comment.index', ['data'=>$data]);
     }
 

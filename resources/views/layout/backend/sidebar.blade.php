@@ -55,7 +55,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{{route('admin.manage.comment')}}">
               <i class="fas fa-fw fa-comments"></i>
-              <span>Comments</span>
+              <span class="comment-style badge badge-danger badge-counter ">{{ $inactiveComments_count }}</span><span>Comments</span>
             </a>
           </li>
           <!-- Users -->

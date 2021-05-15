@@ -44,8 +44,10 @@
             <i class="fas fa-fw fa-address-card"></i>
           </div>
           <div class="mr-5">{{$info['posts_count']}} Posts</div>
-          <span class="m-5">{{$info['activePosts_count']}} Active</span>
-          <span class="m-5">{{$info['inactivePosts_count']}} Inactive</span>
+          <div class="text-center">
+          <span class="m-1">{{$info['activePosts_count']}} Active</span>
+          <span class="m-1">{{$info['inactivePosts_count']}} Inactive</span>
+        </div>
         </div>
         <a class="card-footer text-dark clearfix small z-1" href="{{route('post.index')}}">
           <span class="float-left">View Details</span>

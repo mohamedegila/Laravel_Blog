@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Admin;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -38,5 +39,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('recent_posts', Post::orderBy('id', 'desc')->where('status', 1)->limit($setting->recent_limit)->get());
         
         View::share('popular_posts', Post::orderBy('views', 'desc')->where('status', 1)->limit($setting->popular_limit)->get());
+
+        View::share('inactiveComments_count', Comment::where('status', 0)->count());
     }
 }
