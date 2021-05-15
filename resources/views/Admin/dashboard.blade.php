@@ -12,7 +12,7 @@
   <!-- Breadcrumbs-->
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <a href="index.html">Dashboard</a>
+      <a  href="{{url('admin/dashboard')}}">Dashboard</a>
     </li>
     <li class="breadcrumb-item active">Overview</li>
   </ol>
@@ -65,7 +65,7 @@
           </div>
           <div class="mr-5">{{$info['comments_count']}} Comments</div>
         </div>
-        <a class="card-footer text-dark clearfix small z-1" href="{{url('comment')}}">
+        <a class="card-footer text-dark clearfix small z-1" href="{{route('admin.manage.comment')}}">
           <span class="float-left">View Details</span>
           <span class="float-right">
             <i class="fas fa-angle-right"></i>
@@ -81,7 +81,7 @@
           </div>
           <div class="mr-5">{{$info['users_count']}} Users</div>
         </div>
-        <a class="card-footer text-dark clearfix small z-1" href="{{url('user')}}">
+        <a class="card-footer text-dark clearfix small z-1" href="{{route('admin.manage.users')}}">
           <span class="float-left">View Details</span>
           <span class="float-right">
             <i class="fas fa-angle-right"></i>

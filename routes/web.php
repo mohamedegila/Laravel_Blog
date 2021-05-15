@@ -43,7 +43,9 @@ Route::middleware('authAdmin:webadmin')->group(function () {
     Route::get('admin/post/{id}/delete', [PostController::class,'destroy']);
     Route::get('admin/post/{id}/active', [PostController::class,'active']);
     Route::get('admin/post/{id}/inactive', [PostController::class,'inactive']);
-
+    // users
+    Route::get('admin/user', [AdminController::class,'users'])->name('admin.manage.users');
+    Route::get('admin/user/delete/{id}', [AdminController::class,'delete_user'])->name('admin.manege.user.delete');
     //settings
     Route::get('/admin/setting', [SettingController::class,'index'])->name('admin.setting');
     Route::post('/admin/setting', [SettingController::class,'save_settings'])->name('admin.saveSetting');

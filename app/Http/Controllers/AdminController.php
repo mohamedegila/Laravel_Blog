@@ -68,6 +68,19 @@ class AdminController extends Controller
         );
     }
 
+    // Show all users
+    public function users()
+    {
+        $data=User::orderBy('id', 'desc')->get();
+        return view('Admin.user.index', ['data'=>$data]);
+    }
+
+    public function delete_user($id)
+    {
+        User::where('id', $id)->delete();
+        return redirect('admin/user');
+    }
+
     // Logout
     public function logout()
     {
