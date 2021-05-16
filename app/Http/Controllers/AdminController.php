@@ -8,11 +8,14 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use App\Repository\PostRepository;
+use App\Services\post\DashboardInfo;
 use Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+ 
     //login View
     public function login()
     {
@@ -37,32 +40,35 @@ class AdminController extends Controller
     }
 
     //Dashboard
-    public function dashboard()
+    public function dashboard(DashboardInfo $posts_service)
     {
-        $posts_count = Post::count();
-        $activePosts_count      = Post::where('status', 1)->count();
-        $inactivePosts_count    = Post::where('status', 0)->count();
+        $posts_info = $posts_service->execute();
         $activeComments_count   = Comment::where('status', 1)->count();
         $inactiveComments_count = Comment::where('status', 0)->count();
-        //dd($inactiveComments_count);
+        //dd($posts_info);
         $comments_count = Comment::count();
         $users_count = User::count();
         $categories_count = Category::count();
-        $posts=Post::where('status', 1)->orderBy('id', 'desc')->get();
-        $info = ['posts_count'          =>$posts_count,
-                 'categories_count'     =>$posts_count,
-                 'users_count'          =>$users_count,
+        $comments_info = [
                  'comments_count'       =>$comments_count,
-                 'activePosts_count'    =>$activePosts_count,
-                 'inactivePosts_count'  =>$inactivePosts_count,
                  'activeComments_count'    =>$activeComments_count,
                  'inactiveComments_count'  =>$inactiveComments_count
                 ];
+        $users_info = [
+            
+            'users_count'          =>$users_count,
+        ];
+
+        $categories_info=[
+            'categories_count'     =>$categories_count,
+        ];
         return view(
             'Admin.dashboard',
             [
-            'posts'=>$posts,
-            'info'=>$info,
+            'posts_info'       =>$posts_info,
+            'comments_info'    =>$comments_info,
+            'categories_info'  =>$categories_info,
+            'users_info'       =>$users_info,
             'title'=>'Dashboard'
         ]
         );

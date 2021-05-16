@@ -27,7 +27,7 @@
           <div class="card-body-icon">
             <i class="fas fa-fw fa-list"></i>
           </div>
-          <div class="mr-5">{{$info['categories_count']}} Categories</div>
+          <div class="mr-5">{{$categories_info['categories_count']}} Categories</div>
         </div>
         <a class="card-footer text-dark clearfix small z-1" href="{{route('category.index')}}">
           <span class="float-left">View Details</span>
@@ -43,10 +43,10 @@
           <div class="card-body-icon">
             <i class="fas fa-fw fa-address-card"></i>
           </div>
-          <div class="mr-5">{{$info['posts_count']}} Posts</div>
+          <div class="mr-5">{{$posts_info['posts_count']}} Posts</div>
           <div class="text-center">
-          <span class="m-1">{{$info['activePosts_count']}} Active</span>
-          <span class="m-1">{{$info['inactivePosts_count']}} Inactive</span>
+          <span class="m-1">{{$posts_info['activePosts_count']}} Active</span>
+          <span class="m-1">{{$posts_info['inactivePosts_count']}} Inactive</span>
         </div>
         </div>
         <a class="card-footer text-dark clearfix small z-1" href="{{route('post.index')}}">
@@ -63,7 +63,7 @@
           <div class="card-body-icon">
             <i class="fas fa-fw fa-comments"></i>
           </div>
-          <div class="mr-5">{{$info['comments_count']}} Comments</div>
+          <div class="mr-5">{{$comments_info['comments_count']}} Comments</div>
         </div>
         <a class="card-footer text-dark clearfix small z-1" href="{{route('admin.manage.comment')}}">
           <span class="float-left">View Details</span>
@@ -79,7 +79,7 @@
           <div class="card-body-icon">
             <i class="fas fa-fw fa-users"></i>
           </div>
-          <div class="mr-5">{{$info['users_count']}} Users</div>
+          <div class="mr-5">{{$users_info['users_count']}} Users</div>
         </div>
         <a class="card-footer text-dark clearfix small z-1" href="{{route('admin.manage.users')}}">
           <span class="float-left">View Details</span>
@@ -121,7 +121,7 @@
             </tr>
           </tfoot>
           <tbody>
-              @foreach($posts as $post)
+              @foreach($posts_info['posts'] as $post)
               <tr>
                 <td>{{$post->id}}</td>
                 <td>{{$post->category->title}}</td>

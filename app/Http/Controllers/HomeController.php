@@ -6,6 +6,8 @@ use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Services\post\PostById;
+use App\Services\post\SavePost;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -34,18 +36,10 @@ class HomeController extends Controller
     * @param  post_id
     * @return \Illuminate\Http\Response
     */
-    public function detail(Request $request, $slug, $post_id)
+    public function detail(Request $request, $slug, $post_id, PostById $postService)
     {
-        $comment_count = Post::find($post_id)->comments->where('status', 1)->count();
-        
-        $post = Post::find($post_id);
-        if ($post) {
-            $post->increment('views');
-            $post = Post::find($post_id);
-        } else {
-            return redirect()->route('home');
-        }
-
+        $post = $postService->execute($post_id);
+        $comment_count = $post->comments->where('status', 1)->count();
         return view('detail', ['detail'=>$post,
                                 'comment_counter'=>$comment_count]);
     }
@@ -117,52 +111,9 @@ class HomeController extends Controller
     }
 
     // Save Data
-    public function save_post_data(Request $request)
+    public function save_post_data(Request $request, SavePost $saveAdminPostService)
     {
-        $setting = Admin::select(
-            'user_auto',
-        )
-        ->where('id', 1)->first();
-        $request->validate([
-            'title'=>'required',
-            'category'=>'required',
-            'details'=>'required',
-        ]);
-
-        // Post Thumbnail
-        if ($request->hasFile('post_thumb')) {
-            $image1=$request->file('post_thumb');
-            $reThumbImage=time().'.'.$image1->getClientOriginalExtension();
-            $dest1=public_path('/imgs/thumb');
-            $image1->move($dest1, $reThumbImage);
-        } else {
-            $reThumbImage='na';
-        }
-
-        // Post Full Image
-        if ($request->hasFile('post_image')) {
-            $image2=$request->file('post_image');
-            $reFullImage=time().'.'.$image2->getClientOriginalExtension();
-            $dest2=public_path('/imgs/full');
-            $image2->move($dest2, $reFullImage);
-        } else {
-            $reFullImage='na';
-        }
-
-        $post=new Post;
-        $post->user_id=$request->user()->id;
-        $post->cat_id=$request->category;
-        $post->title=$request->title;
-        $post->thumb=$reThumbImage;
-        $post->full_img=$reFullImage;
-        $post->details=$request->details;
-        $post->tags=$request->tags;
-
-        if ($setting->user_auto == 1) {
-            $post->status=1;
-        }
-       
-        $post->save();
+        $saveAdminPostService->execute($request);
 
         return redirect('save-post-form')->with('success', 'Post has been added');
     }

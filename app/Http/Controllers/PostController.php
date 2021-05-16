@@ -3,24 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Post;
+
+use App\Services\post\AllPosts;
+use App\Services\post\ChangeStatus;
+use App\Services\post\Create;
+use App\Services\post\Destroy;
+use App\Services\post\PostById;
+use App\Services\post\Update;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(AllPosts $service)
     {
-        $data = Post::all();
-        return view('Admin.post.index', [
-            'data'=>$data,
-            'title'=>'All Posts',
-            'meta_desc'=>'This is meta description for all categories'
-        ]);
+        $data = $service->execute();
+        return view(
+            'Admin.post.index',
+            [
+                'data'=>$data,
+                'title'=>'All Posts',
+                'meta_desc'=>'This is meta description for all categories'
+            ]
+        );
     }
 
     /**
@@ -40,43 +51,9 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Create $saveAdminPostService)
     {
-        $request->validate([
-            'title'=>'required',
-            'details'=>'required',
-            'category'=>'required'
-        ]);
-
-        // Post Thumbnail
-        if ($request->hasFile('post_thumb')) {
-            $image1=$request->file('post_thumb');
-            $reThumbImage=time().'.'.$image1->getClientOriginalExtension();
-            $dest1=public_path('/imgs/thumb');
-            $image1->move($dest1, $reThumbImage);
-        } else {
-            $reThumbImage='na';
-        }
-
-        // Post Full Image
-        if ($request->hasFile('post_image')) {
-            $image2=$request->file('post_image');
-            $reFullImage=time().'.'.$image2->getClientOriginalExtension();
-            $dest2=public_path('/imgs/full');
-            $image2->move($dest2, $reFullImage);
-        } else {
-            $reFullImage='na';
-        }
-
-        $post=new Post;
-        $post->user_id=1;
-        $post->cat_id=$request->category;
-        $post->title=$request->title;
-        $post->thumb=$reThumbImage;
-        $post->full_img=$reFullImage;
-        $post->details=$request->details;
-        $post->tags=$request->tags;
-        $post->save();
+        $saveAdminPostService->execute($request);
 
         return redirect('admin/post/create')->with('success', 'Data has been added');
     }
@@ -98,9 +75,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, PostById $getByIdService)
     {
-        $data = Post::find($id);
+        $data = $getByIdService->execute($id);
         $categories = Category::all();
         return view('Admin.post.update', ['data'=>$data,'categories'=>$categories]);
     }
@@ -112,56 +89,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, Update $updateService)
     {
-        $post=Post::find($id);
-        $request->validate([
-            'title'=>'required',
-            'details'=>'required',
-            'category'=>'required'
-        ]);
-
-
-        if ($post->full_img !== "na" && $post->full_img !== "") {
-            $path = public_path('/imgs/full').'/'.$post->full_img;
-            unlink($path);
-        }
-        
-        if ($post->thumb !== "na" && $post->full_img !== "") {
-            $path = public_path('/imgs/thumb').'/'.$post->thumb;
-            unlink($path);
-        }
-
-        // Post Thumbnail
-        if ($request->hasFile('post_thumb')) {
-            $image1=$request->file('post_thumb');
-            $reThumbImage=time().'.'.$image1->getClientOriginalExtension();
-         
-            $dest1=public_path('/imgs/thumb');
-            $image1->move($dest1, $reThumbImage);
-        } else {
-            $reThumbImage=$request->post_thumb;
-        }
-
-        // Post Full Image
-        if ($request->hasFile('post_image')) {
-            $image2=$request->file('post_image');
-            $reFullImage=time().'.'.$image2->getClientOriginalExtension();
-            $dest2=public_path('/imgs/full');
-            $image2->move($dest2, $reFullImage);
-        } else {
-            $reFullImage=$request->post_image;
-        }
-
-        //$post=Post::find($id);
-        $post->cat_id=$request->category;
-        $post->title=$request->title;
-        $post->thumb=$reThumbImage;
-        $post->full_img=$reFullImage;
-        $post->details=$request->details;
-        $post->tags=$request->tags;
-        $post->save();
-
+        $updateService->execute($request, $id);
         return redirect('admin/post/'.$id.'/edit')->with('success', 'Post has been updated');
     }
 
@@ -171,40 +101,21 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Destroy $destroyService)
     {
-        $post = Post::where('id', $id)->first();
-        
-        
-        if ($post->full_img !== "na") {
-            $path = public_path('/imgs/full').'/'.$post->full_img;
-            unlink($path);
-        }
-        
-        if ($post->thumb !== "na") {
-            $path = public_path('/imgs/thumb').'/'.$post->thumb;
-            unlink($path);
-        }
-        $post->delete();
+        $destroyService->execute($id);
         return redirect('admin/post');
     }
 
-    public function active($id)
+    public function active($id, ChangeStatus $statusService)
     {
-        $post = Post::where('id', $id)->first();
-
-        $post->status=1;
-        $post->save();
-
+        $statusService->execute($id, 1);
         return redirect('admin/post');
     }
 
-    public function inactive($id)
+    public function inactive($id, ChangeStatus $statusService)
     {
-        $post = Post::where('id', $id)->first();
-
-        $post->status=0;
-        $post->save();
+        $statusService->execute($id, 0);
 
         return redirect('admin/post');
     }
